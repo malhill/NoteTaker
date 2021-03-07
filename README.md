@@ -20,4 +20,5 @@ The purpose of this app is to provide the ability to take notes. The data will p
 
 ## BACK-END
 * Needed to connect the back end edits to the front end
-* We utilized: GET, POST, and DELETE request methods
+* Utilizing: Expess, Node, and NPM packages to help the app function
+* Utilizing: GET, POST, and DELETE request methods
