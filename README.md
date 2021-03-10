@@ -17,8 +17,10 @@ The purpose of this app is to provide the ability to take notes. The data will p
 * Added 'let idNum = 1;' to index.js on line 8
 * Then added 'id: idNum' on line 51
 * This was needed to add the id to the notes posted
+* Added idNum++ to add an extra id number for each note created
 
 ## BACK-END
 * Needed to connect the back end edits to the front end
 * Utilizing: Expess, Node, and NPM packages to help the app function
 * Utilizing: GET, POST, and DELETE request methods
+* Learned to create a for loop so that I can cycle through the ids without them deleting more than one.
