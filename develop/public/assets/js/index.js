@@ -50,6 +50,7 @@ const handleNoteSave = function () {
     text: $noteText.val(),
     id: idNum
   };
+  idNum++;
   saveNote(newNote).then(() => {
     getAndRenderNotes();
     renderActiveNote();
