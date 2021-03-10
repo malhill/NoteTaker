@@ -97,12 +97,12 @@ const renderNoteList = (notes) => {
   const create$li = (text, withDeleteButton = true) => {
     const $li = $("<li class='list-group-item'>");
     const $span = $("<span>").text(text);
-    $li.append($span);
+    $li.prepend($span);
     if (withDeleteButton) {
       const $delBtn = $(
         "<i class='fas fa-trash-alt float-right text-danger delete-note'>"
       );
-      $li.append($delBtn);
+      $li.prepend($delBtn);
     }
     return $li;
   };
@@ -113,7 +113,7 @@ const renderNoteList = (notes) => {
     const $li = create$li(note.title).data(note);
     noteListItems.push($li);
   });
-  $noteList.append(noteListItems);
+  $noteList.prepend(noteListItems);
 };
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => {
