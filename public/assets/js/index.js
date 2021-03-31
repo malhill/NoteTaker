@@ -59,6 +59,7 @@ const handleNoteSave = function () {
   saveNote(newNote).then(() => {
     getAndRenderNotes();
     renderActiveNote();
+    location.reload();
   });
 };
 
@@ -105,6 +106,9 @@ const handleRenderSaveBtn = function () {
 const renderNoteList = (notes) => {
   $noteList.empty();
 
+  // console.log(notes);
+  // console.log(typeof notes);
+
   const noteListItems = [];
 
   // Returns jquery object for li with given text and delete button
@@ -127,6 +131,10 @@ const renderNoteList = (notes) => {
     noteListItems.push(create$li("No saved Notes", false));
   }
 
+  // for(let i=0; i < notes.length; i++) {
+  //   console.log(i);
+  //   console.log(notes[i]);
+  // }
   notes.forEach((note) => {
     const $li = create$li(note.title).data(note);
     noteListItems.push($li);

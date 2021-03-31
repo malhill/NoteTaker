@@ -6,51 +6,61 @@ const app = express();
 const path = require("path");
 const { request } = require("http");
 const { json } = require("body-parser");
+const db = require('./db/db.json')
 
-app.use(urlencoded( { extended: true } ));
+app.use(urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
-
-app.get("/notes", (request, response) => {
-    response.sendFile(path.join(__dirname, "/public/notes.html"));
-    console.log("Notes!");
-});
 
 app.get("/", (request, response) => {
     response.sendFile(path.join(__dirname, "/public/index.html"));
     console.log("Home!");
 });
 
+app.get("/notes", (request, response) => {
+    response.sendFile(path.join(__dirname, "/public/notes.html"));
+    console.log("Notes!");
+});
+
 app.get('/api/notes', (request, response) => {
-    fs.readFile('db/db.json', 'utf8', (err, data) => {
-        if (err) throw err;
-        response.json(data)
-    }); 
+    response.json(db);
+    if (err) throw err;
+
+    // fs.readFile('db/db.json', 'utf8', (err, data) => {
+    //     response.json(data);
+    //     // console.log('get' + data);
+    // });
 });
 
 app.post("/api/notes", (request, response) => {
     fs.readFile('db/db.json', 'utf8', (err, data) => {
         if (err) throw err;
-        console.log(data);
+        // console.log(data);
 
         const newNote = request.body;
 
         let userNotes = JSON.parse(data);
         // let userNotes = response.json(JSON.parse(data));
 
-        newNote.id = userNotes[userNotes.length-1];
+        newNote.id = parseInt(userNotes[userNotes.length - 1].id) + 1; // <---- Anthony was here!
 
-        console.log(userNotes);
+        // console.log((userNotes[userNotes.length - 1].id) + 1);
+        // console.log(newNote);
+
 
         userNotes.push(newNote);
+        // console.log(userNotes);
+
 
         fs.writeFile('db/db.json', JSON.stringify(userNotes), (err, data) => {
             if (err) throw err;
-            console.log(data);
+            // console.log(data);
         });
 
         response.send("note added");
-    });    
+        // console.log('Note Added!!!!!!!');
+
+    });
 });
 
 app.delete("/api/notes/:id", (request, response) => {
@@ -63,12 +73,12 @@ app.delete("/api/notes/:id", (request, response) => {
         const deleteId = request.params.id;
 
         //.toString() Just in case we need this...
-        for (let i=0; i < deleteNotes.length; i++){
+        for (let i = 0; i < deleteNotes.length; i++) {
             if (deleteId === deleteNotes[i].id) {
-            deleteNotes.splice(i, 1);
+                deleteNotes.splice(i, 1);
             };
         };
-        
+
         fs.writeFile('db/db.json', JSON.stringify(deleteNotes), (err, data) => {
             if (err) throw err;
             console.log(data);
