@@ -24,7 +24,7 @@ app.get("/notes", (request, response) => {
 
 app.get('/api/notes', (request, response) => {
     response.json(db);
-    if (err) throw err;
+    // if (err) throw err;
 
     // fs.readFile('db/db.json', 'utf8', (err, data) => {
     //     response.json(data);
@@ -33,26 +33,32 @@ app.get('/api/notes', (request, response) => {
 });
 
 app.post("/api/notes", (request, response) => {
-    fs.readFile('db/db.json', 'utf8', (err, data) => {
-        if (err) throw err;
+    // fs.readFile('db/db.json', 'utf8', (err, data) => {
+        // if (err) throw err;
         // console.log(data);
 
         const newNote = request.body;
 
-        let userNotes = JSON.parse(data);
+        // let userNotes = JSON.parse(data);
         // let userNotes = response.json(JSON.parse(data));
 
-        newNote.id = parseInt(userNotes[userNotes.length - 1].id) + 1; // <---- Anthony was here!
+        if(db.length == 0) {
+            newNote.id=0;
+        } else {
+            newNote.id = parseInt(db[db.length - 1].id) + 1;
+        }
+
+        // newNote.id = parseInt(userNotes[userNotes.length - 1].id) + 1; // <---- Anthony was here!
 
         // console.log((userNotes[userNotes.length - 1].id) + 1);
-        // console.log(newNote);
+        console.log(newNote);
 
 
-        userNotes.push(newNote);
+        db.push(newNote);
         // console.log(userNotes);
 
 
-        fs.writeFile('db/db.json', JSON.stringify(userNotes), (err, data) => {
+        fs.writeFile('db/db.json', JSON.stringify(db), (err, data) => {
             if (err) throw err;
             // console.log(data);
         });
@@ -61,45 +67,45 @@ app.post("/api/notes", (request, response) => {
         // console.log('Note Added!!!!!!!');
 
     });
-});
 
 app.delete("/api/notes/:id", (request, response) => {
-    fs.readFile('db/db.json', 'utf8', (err, data) => {
-        if (err) throw err;
-        console.log(data);
+    // fs.readFile('db/db.json', 'utf8', (err, data) => {
+        // if (err) throw err;
+        // console.log(data);
 
-        const deleteNotes = JSON.parse(data);
+        // response.json(db);
+
+
+        // const deleteNotes = JSON.parse(data);
 
         const deleteId = request.params.id;
 
+        // console.log(deleteId);
+
+        console.log(db);
+
         //.toString() Just in case we need this...
-        for (let i = 0; i < deleteNotes.length; i++) {
-            if (deleteId === deleteNotes[i].id) {
-                deleteNotes.splice(i, 1);
+        for (let i = 0; i < db.length; i++) {
+            console.log(db[i].id)
+            if (deleteId == db[i].id) {
+                db.splice(i, 1);
             };
         };
 
-        fs.writeFile('db/db.json', JSON.stringify(deleteNotes), (err, data) => {
-            if (err) throw err;
-            console.log(data);
+
+
+        fs.writeFile('db/db.json', JSON.stringify(db), (err, data) => {
+            // if (err) throw err;
+            // console.log(data);
         });
 
         response.send("note deleted");
     });
-});
 
 app.listen(PORT, () => {
     console.log(`Server started on ${PORT}`);
 });
 
-// In case db.json is erased!
-// [
-//     {
-//         "title":"Test Title",
-//         "text":"Test text",
-//         "id":"0"
-//     }
-// ]
 
 
 
